@@ -1,0 +1,110 @@
+[
+ {
+  "sharex": true,
+  "maxPlots": 3,
+  "plots": [
+   {
+    "xOptions": {
+     "xVariavel": "DataHora_PLC",
+     "xQuery": ""
+    },
+    "yOptions": [
+     {
+      "color": [
+       15,
+       100,
+       174
+      ],
+      "plotType": 1,
+      "strVariavel": "A100_PFreio_E1",
+      "strQuery": ""
+     },
+     {
+      "color": [
+       255,
+       85,
+       127
+      ],
+      "plotType": 1,
+      "strVariavel": "A100_PFreio_E2",
+      "strQuery": ""
+     },
+     {
+      "color": [
+       0,
+       170,
+       127
+      ],
+      "plotType": 1,
+      "strVariavel": "A100_PFreio_E3",
+      "strQuery": ""
+     },
+     {
+      "color": [
+       169,
+       43,
+       159
+      ],
+      "plotType": 1,
+      "strVariavel": "A100_PFreio_E4",
+      "strQuery": ""
+     }
+    ],
+    "grid": true
+   }
+  ],
+  "name": "Plot"
+ },
+ {
+  "sharex": true,
+  "maxPlots": 3,
+  "plots": [
+   {
+    "xOptions": {
+     "xVariavel": "ASG_GMP1_ROTACAO_INP",
+     "xQuery": "A100_Sentido==1 and A100_Posicao <= A100_PNeutro_ATR"
+    },
+    "yOptions": [
+     {
+      "color": [
+       242,
+       126,
+       213
+      ],
+      "plotType": 2,
+      "strVariavel": "GMP1_vibracao",
+      "strQuery": ""
+     }
+    ],
+    "grid": true
+   }
+  ],
+  "name": "Plot"
+ },
+ {
+  "sharex": true,
+  "maxPlots": 3,
+  "plots": [
+   {
+    "xOptions": {
+     "xVariavel": "ASG_GMP1_ROTACAO_INP",
+     "xQuery": "A100_Sentido==2 and A100_Posicao >= A100_PNeutro_ASG"
+    },
+    "yOptions": [
+     {
+      "color": [
+       171,
+       75,
+       135
+      ],
+      "plotType": 2,
+      "strVariavel": "GMP1_vibracao",
+      "strQuery": ""
+     }
+    ],
+    "grid": true
+   }
+  ],
+  "name": "Plot"
+ }
+]

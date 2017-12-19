@@ -1,0 +1,283 @@
+[
+ {
+  "sharex": true,
+  "maxPlots": 3,
+  "plots": [
+   {
+    "grid": true,
+    "yOptions": [
+     {
+      "color": [
+       73,
+       236,
+       73
+      ],
+      "plotType": 1,
+      "strQuery": "",
+      "strVariavel": "A100_VAC"
+     }
+    ],
+    "xOptions": {
+     "xVariavel": "DataHora_PLC_tempo",
+     "xQuery": ""
+    }
+   },
+   {
+    "grid": true,
+    "yOptions": [
+     {
+      "color": [
+       131,
+       86,
+       178
+      ],
+      "plotType": 1,
+      "strQuery": "",
+      "strVariavel": "A100_ATP"
+     },
+     {
+      "color": [
+       0,
+       255,
+       255
+      ],
+      "plotType": 1,
+      "strQuery": "",
+      "strVariavel": "A100_HVAC"
+     }
+    ],
+    "xOptions": {
+     "xVariavel": "DataHora_PLC_tempo",
+     "xQuery": ""
+    }
+   },
+   {
+    "grid": true,
+    "yOptions": [
+     {
+      "color": [
+       187,
+       74,
+       24
+      ],
+      "plotType": 1,
+      "strQuery": "DataHora_PLC_dia==13",
+      "strVariavel": "A100_Posicao"
+     },
+     {
+      "color": [
+       225,
+       52,
+       163
+      ],
+      "plotType": 1,
+      "strQuery": "DataHora_PLC_dia==12",
+      "strVariavel": "A100_Posicao"
+     }
+    ],
+    "xOptions": {
+     "xVariavel": "DataHora_PLC_tempo",
+     "xQuery": ""
+    }
+   },
+   {
+    "grid": true,
+    "yOptions": [
+     {
+      "color": [
+       16,
+       81,
+       213
+      ],
+      "plotType": 1,
+      "strQuery": "DataHora_PLC_dia==13",
+      "strVariavel": "A100_Ar_comp"
+     },
+     {
+      "color": [
+       129,
+       153,
+       137
+      ],
+      "plotType": 1,
+      "strQuery": "DataHora_PLC_dia==12",
+      "strVariavel": "A100_Ar_comp"
+     }
+    ],
+    "xOptions": {
+     "xVariavel": "DataHora_PLC_tempo",
+     "xQuery": ""
+    }
+   }
+  ],
+  "name": "Plot"
+ },
+ {
+  "sharex": false,
+  "maxPlots": 3,
+  "plots": [
+   {
+    "grid": true,
+    "yOptions": [
+     {
+      "color": [
+       171,
+       45,
+       112
+      ],
+      "plotType": 2,
+      "strQuery": "A100_HVAC == 1",
+      "strVariavel": "A100_VAC"
+     },
+     {
+      "color": [
+       26,
+       226,
+       69
+      ],
+      "plotType": 2,
+      "strQuery": "A100_HVAC == 0",
+      "strVariavel": "A100_VAC"
+     }
+    ],
+    "xOptions": {
+     "xVariavel": "A100_Posicao",
+     "xQuery": "A100_Posicao != 810 and \"2017-12-14 23:55:00\" > DataHora_PLC > \"2017-12-14 06:00:00\""
+    }
+   }
+  ],
+  "name": "Plot"
+ },
+ {
+  "sharex": true,
+  "maxPlots": 3,
+  "plots": [
+   {
+    "grid": true,
+    "yOptions": [
+     {
+      "color": [
+       81,
+       178,
+       167
+      ],
+      "plotType": 1,
+      "strQuery": "",
+      "strVariavel": "A100_Posicao"
+     },
+     {
+      "color": [
+       155,
+       60,
+       20
+      ],
+      "plotType": 1,
+      "strQuery": "",
+      "strVariavel": "A100_PNeutro_ASG"
+     }
+    ],
+    "xOptions": {
+     "xVariavel": "DataHora_PLC",
+     "xQuery": ""
+    }
+   },
+   {
+    "grid": true,
+    "yOptions": [
+     {
+      "color": [
+       74,
+       146,
+       98
+      ],
+      "plotType": 1,
+      "strQuery": "",
+      "strVariavel": "A100_Velocidade"
+     },
+     {
+      "color": [
+       121,
+       169,
+       17
+      ],
+      "plotType": 1,
+      "strQuery": "",
+      "strVariavel": "A100_SetPointView"
+     }
+    ],
+    "xOptions": {
+     "xVariavel": "DataHora_PLC",
+     "xQuery": ""
+    }
+   },
+   {
+    "grid": true,
+    "yOptions": [
+     {
+      "color": [
+       44,
+       97,
+       24
+      ],
+      "plotType": 1,
+      "strQuery": "",
+      "strVariavel": "A100_ATP"
+     },
+     {
+      "color": [
+       204,
+       84,
+       237
+      ],
+      "plotType": 1,
+      "strQuery": "",
+      "strVariavel": "A100_ATO"
+     }
+    ],
+    "xOptions": {
+     "xVariavel": "DataHora_PLC",
+     "xQuery": ""
+    }
+   },
+   {
+    "grid": true,
+    "yOptions": [
+     {
+      "color": [
+       138,
+       80,
+       106
+      ],
+      "plotType": 1,
+      "strQuery": "",
+      "strVariavel": "A100_PFreio_E1"
+     }
+    ],
+    "xOptions": {
+     "xVariavel": "DataHora_PLC",
+     "xQuery": ""
+    }
+   },
+   {
+    "grid": true,
+    "yOptions": [
+     {
+      "color": [
+       158,
+       166,
+       35
+      ],
+      "plotType": 1,
+      "strQuery": "",
+      "strVariavel": "ASG_VA1_sta"
+     }
+    ],
+    "xOptions": {
+     "xVariavel": "DataHora_PLC",
+     "xQuery": ""
+    }
+   }
+  ],
+  "name": "Plot"
+ }
+]
