@@ -8,7 +8,6 @@ Este programa foi feito para python3, e necessita as seguintes bibliotecas insta
   + rx
   + pandas
   + numpy
-  + scipy
   
 ## Rodando o programa
 Para rodar o programa, basta digitar no terminal:

@@ -31,8 +31,8 @@ class DadoSistema(pd.DataFrame):
                     self[column + "_hora"] = self[column].dt.hour
                     self[column + "_minuto"] = self[column].dt.minute
                     self[column + "_segundo"] = self[column].dt.second
-                    self[column + "_data"] = pd.to_datetime([d.isoformat() for d in self[column].dt.date])
-                    self[column + "_tempo"] = pd.to_datetime([t.isoformat() for t in self[column].dt.time])
+                    #self[column + "_data"] = pd.to_datetime([d.isoformat() for d in self[column].dt.date])
+                    #self[column + "_tempo"] = pd.to_datetime([t.isoformat() for t in self[column].dt.time])
                 except Exception as e:
                     print(e)
                     self.drop([column], axis=1, inplace=True)

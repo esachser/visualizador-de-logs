@@ -27,8 +27,6 @@ CONFIG_FILE = '{}\configFile.json'.format(pgname)
 ICON_FILE = '{}\VisIcon.ico'.format(pgname)
 
 class MainWindow(QtWidgets.QMainWindow):
-
-
     def __init__(self, parent = None):
         super(MainWindow, self).__init__(parent)
         self.setWindowTitle('Visualizador de logs')
@@ -281,13 +279,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def escolheArquivoAbrir(self):
         import time
-        arquivo = QtWidgets.QFileDialog.getOpenFileName(self, u'Escolha o csv',
+        # Pensar em como fazer para receber vários arquivos como entrada
+        arquivo = QtWidgets.QFileDialog.getOpenFileNames(self, u'Escolha o csv',
                                                     QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DocumentsLocation),
                                                     '*.csv')
-        if arquivo[0] is not "":
+        if arquivo[0]:
             # print (arquivo)
-            arquivo = str(arquivo[0])
-
             # Calcula dados da progressDialog
             if self.__firstFile__:
                 nitems = sum([len(t.plots) for t in self.information])
@@ -308,8 +305,7 @@ class MainWindow(QtWidgets.QMainWindow):
             QtCore.QCoreApplication.processEvents()
 
             # print('Init', time.strftime('%Y-%m-%d %H:%M:%S'))
-            res = controller.carregaArquivo(arquivo)
-
+            res = "\n".join([controller.carregaArquivo(str(strfilename)) for strfilename in arquivo[0]])
 
             # # Coloca dados na listwidget
             # print('Arquivo', time.strftime('%Y-%m-%d %H:%M:%S'))
@@ -333,9 +329,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 # print("Fim tab", time.strftime('%Y-%m-%d %H:%M:%S'))
                 self.tabWidgetPlots.setCurrentIndex(0)
-
                 self.tabWidgetPlots.currentChanged.connect(self.currentTabChanged)
-
                 self.currentTabChanged(0)
 
                 QtGui.QAction.setEnabled(self.actAdicionarTab, True)
@@ -345,7 +339,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 QtGui.QAction.setEnabled(self.actCarregarOps, True)
 
                 self.widgetConfigPlot.setEnabled(True)
-                # print("Fim", time.strftime('%Y-%m-%d %H:%M:%S'))
                 self.__firstFile__ = False
             else:
                 for tab in self.tabPresenters:
@@ -406,6 +399,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
     def carregaTab(self, t):
+        # print("No inicio")
         tbwidget = QtGui.QWidget(self)
         lay = QtGui.QVBoxLayout(tbwidget)
         toolbar = QtGui.QToolBar(self)
@@ -415,7 +409,7 @@ class MainWindow(QtWidgets.QMainWindow):
         tbwidget.setLayout(lay)
         self.tabWidgetPlots.addTab(tbwidget, t.name)
 
-
+        # print("No meio")
         plotPresenters = []
         for plot in t.plots:
             # print()
@@ -425,7 +419,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 plotPresenters.append(p)
                 win.nextRow()
 
-
+        # print("Carregou")
         tabVM = TabViewModel(t.share, t.maxPlots, t.name)
 
 
@@ -459,17 +453,26 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def closeEvent(self, evt):
         # print('close')
+        hasToClose = True
         if len(self.tabPresenters) > 0:
             quit_msg = "Salvar configuração atual de plots?"
-            reply = QtGui.QMessageBox.question(self, 'Salvar',
-                             quit_msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+            reply = QtWidgets.QMessageBox.question(self, 'Salvar',
+                             quit_msg,
+                             QtWidgets.QMessageBox.Yes |  QtWidgets.QMessageBox.No |  QtWidgets.QMessageBox.Cancel | QtWidgets.QMessageBox.Escape, 
+                             QtWidgets.QMessageBox.Cancel)
 
-            if reply == QtGui.QMessageBox.Yes:
+            if reply ==  QtWidgets.QMessageBox.Yes:
                 saveTabPresenters(self.tabPresenters, CONFIG_FILE)
-
-        self.widgetConfigPlot.close()
-        evt.accept()
-
+            elif reply ==  QtWidgets.QMessageBox.No:
+                pass
+            else:
+                hasToClose = False
+        
+        if hasToClose:
+            self.widgetConfigPlot.close()
+            evt.accept()
+        else:
+            evt.ignore()
 
 
 def start():

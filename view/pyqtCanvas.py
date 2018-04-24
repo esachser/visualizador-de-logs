@@ -9,11 +9,9 @@ import rx
 import functools as f
 from PyQt5 import QtCore, QtGui, QtWidgets
 import weakref
+import traceback
 from options.info import PlotType
-
-
 import time
-
 import random
 
 
@@ -247,21 +245,19 @@ class InfoPlotItem(QtCore.QObject):
                             val = np.NaN
                         else:
                             try:
-                                newY = y.copy()
-                                newY[x] = np.NaN
-                                val = newY.interpolate(method='nearest')[x]
+                                mY = mousePoint.y()
+                                diff = (np.abs(y.index - x)).argsort()[0]
+                                val = y.ix[y.index[diff]]
                             except:
                                 val = np.NaN
 
                     if isinstance(val, pd.Series):
                         mY = mousePoint.y()
-                        cho = val.index[0]
+                        cho = None
                         for valor in val:
-                            if abs(valor - mY) < abs(cho - mY):
+                            if cho is None or abs(valor - mY) < abs(cho - mY):
                                 cho = valor
                         val = cho
-
-
                     val = round(val, 3)
 
                     text = '' if np.isnan(val) else '{}'.format(val)
@@ -427,7 +423,7 @@ def processPlot(window, options):
     xstr = options.x.strVariavel
     xqstr = options.x.strQuery
 
-    # print('InitPlot' ,time.strftime('%Y:%m:%d %H:%M:%S'))
+    
 
     if not controller.varExists(xstr):
         return None
@@ -436,11 +432,13 @@ def processPlot(window, options):
 
     if x is None:
         return None
-
+    # print('InitPlot' ,time.strftime('%Y:%m:%d %H:%M:%S'))
     # plot = window.addPlot(axisItems={'bottom': TimeAxisItem(orientation='bottom')}) if x.dtypes == 'datetime64[ns]' else window.addPlot()
     plot = PlotItemAero(axisItems={'bottom': MyAxisItem(isTime = (x.dtypes == 'datetime64[ns]'), orientation='bottom')})
+    # print('MiddlePlot' ,time.strftime('%Y:%m:%d %H:%M:%S'))
     window.addItem(plot)
     nplot = InfoPlotItem(plot, None, None, options.grid, time = (x.dtypes == 'datetime64[ns]'))
+    # print('EndPlot' ,time.strftime('%Y:%m:%d %H:%M:%S'))
 
     plotVM = PlotViewModel(xstr, xqstr, options.grid)
     plotVM.gridBehavior.subscribe(nplot.showGrid)
@@ -448,14 +446,6 @@ def processPlot(window, options):
     plotItemPresenters = \
         [PlotItemPresenter(None, PlotItemViewModel(pltItem.strVariavel, pltItem.strQuery, pltItem.color, pltItem.plotType))
         for pltItem in options.y if controller.varXYExists(xstr, pltItem.strVariavel)]
-
-    # def change(plot, i):
-    #     plot.color = [(i*10) % 255, 0, 0]
-    #     print((i*10) % 255)
-
-    # if x.dtypes == 'datetime64[ns]':
-    #     rx.Observable.interval(1000).subscribe(f.partial(change, plotVM.plotItems[0]))
-    # print('EndPlot' ,time.strftime('%Y:%m:%d %H:%M:%S'))
 
     return PlotPresenter(nplot, plotVM, plotItemPresenters)
 
