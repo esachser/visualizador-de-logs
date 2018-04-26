@@ -19,12 +19,14 @@ from view.pyqtCanvas import processPlot, PlotMenu
 from view.mainViewModel import TabViewModel, TabPresenter, saveTabPresenters
 
 import view.configWidgets as configWidgets
+from TabWidgets import TabWidget, TabBar
 
 import time
 
 MAX_NUMBER_OF_PLOTS_PER_TAB = 6
-CONFIG_FILE = '{}\configFile.json'.format(pgname)
-ICON_FILE = '{}\VisIcon.ico'.format(pgname)
+CONFIG_FILE = '{}/configFile.json'.format(pgname)
+ICON_FILE = '{}/VisIcon.ico'.format(pgname)
+
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
@@ -54,7 +56,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.widgetConfigPlot = configWidgets.WidgetConfig(None)
         self.widgetConfigPlot.setWindowFlags(QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowMaximizeButtonHint)
 
-        self.tabWidgetPlots = QtWidgets.QTabWidget(self)
+        self.tabWidgetPlots = TabWidget(self)
         # self.tabWidgetPlots.cl
         # Cria o layout
         layout = QtWidgets.QHBoxLayout()
@@ -345,6 +347,7 @@ class MainWindow(QtWidgets.QMainWindow):
                         pgbar.setValue(idxpg)
                         pgbar.show()
 
+            self.tabWidgetPlots.tabBar().sigChangeName.connect(f.partial(self.change_tabName, self.tabPresenters))
 
             # idxpg += 1
             # pgbar.setValue(idxpg)
@@ -357,6 +360,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         else:
             print('Operacao cancelada')
+
+    def change_tabName(self, tabPresenters, idx, name):
+        tabPresenters[idx].tabViewModel.name = name
 
     def change_shareX(self, tab, i):
         tab.sharex = (i != 0)
@@ -397,7 +403,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def carregaTab(self, t):
         # print("No inicio")
-        tbwidget = QtWidgets.QWidget(self)
+        tbwidget = TabBar(self)
         lay = QtWidgets.QVBoxLayout(tbwidget)
         toolbar = QtWidgets.QToolBar(self)
         lay.addWidget(toolbar)

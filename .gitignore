@@ -1,4 +1,6 @@
 .vscode/
 __pycache__/
+*.spec
+configFile.json
 dist/
 build/
