@@ -11,51 +11,51 @@ from PyQt5.QtWidgets import QWidget, QInputDialog
 from PyQt5 import QtWidgets
 
 
-class WidgetConfig(QtGui.QWidget):
+class WidgetConfig(QtWidgets.QWidget):
 	"""docstring for WidgetConfig"""
 	sigRemovePlot = QtCore.pyqtSignal()
 
 	def __init__(self, parent):
 		super(WidgetConfig, self).__init__(parent)
 		self.setWindowTitle("Configuração")
-		vLayoutConfig = QtGui.QVBoxLayout()
+		vLayoutConfig = QtWidgets.QVBoxLayout()
 
 		
-		widgetXVar = QtGui.QWidget(self)
-		widgetXVar.setLayout(QtGui.QHBoxLayout())
-		widgetXVar.layout().addWidget(QtGui.QLabel('Variável X: '))
-		self.xVarConfig = QtGui.QComboBox(self)
+		widgetXVar = QtWidgets.QWidget(self)
+		widgetXVar.setLayout(QtWidgets.QHBoxLayout())
+		widgetXVar.layout().addWidget(QtWidgets.QLabel('Variável X: '))
+		self.xVarConfig = QtWidgets.QComboBox(self)
 		widgetXVar.layout().addWidget(self.xVarConfig, stretch = 1)
 		vLayoutConfig.addWidget(widgetXVar)
 
 		# self.xVarConfig.setAutoCompletion(True)
 
-		groupBoxXQuery = QtGui.QGroupBox('X Query', self)
-		groupBoxXQuery.setLayout(QtGui.QVBoxLayout())
+		groupBoxXQuery = QtWidgets.QGroupBox('X Query', self)
+		groupBoxXQuery.setLayout(QtWidgets.QVBoxLayout())
 
-		self.xQueryConfig = QtGui.QLineEdit(self)
+		self.xQueryConfig = QtWidgets.QLineEdit(self)
 		groupBoxXQuery.layout().addWidget(self.xQueryConfig, stretch = 1)
 		# vLayoutConfig.addWidget(widgetXQuery)
 
-		widgetXQueryViagens = QtGui.QWidget(self)
-		widgetXQueryViagens.setLayout(QtGui.QHBoxLayout())
-		self.xQueryChooseDateATRButton = QtGui.QPushButton('Escolher Viagem de ATR', self)
-		self.xQueryChooseDateASGButton = QtGui.QPushButton('Escolher Viagem de ASG', self)
+		widgetXQueryViagens = QtWidgets.QWidget(self)
+		widgetXQueryViagens.setLayout(QtWidgets.QHBoxLayout())
+		self.xQueryChooseDateATRButton = QtWidgets.QPushButton('Escolher Viagem de ATR', self)
+		self.xQueryChooseDateASGButton = QtWidgets.QPushButton('Escolher Viagem de ASG', self)
 		widgetXQueryViagens.layout().addWidget(self.xQueryChooseDateATRButton)
 		widgetXQueryViagens.layout().addWidget(self.xQueryChooseDateASGButton)
 		groupBoxXQuery.layout().addWidget(widgetXQueryViagens)
 
 		vLayoutConfig.addWidget(groupBoxXQuery, stretch = 0)
 
-		self.chkBoxGrid = QtGui.QCheckBox('Habilitar grid', self)
+		self.chkBoxGrid = QtWidgets.QCheckBox('Habilitar grid', self)
 		vLayoutConfig.addWidget(self.chkBoxGrid)
 
-		self.tabWidgetPlotItemConfig = QtGui.QTabWidget(self)
+		self.tabWidgetPlotItemConfig = QtWidgets.QTabWidget(self)
 		vLayoutConfig.addWidget(self.tabWidgetPlotItemConfig, stretch = 1)
 
-		# self.exportButton = QtGui.QPushButton('Exportar imagem')
-		# self.addPlotButton = QtGui.QPushButton('Nova Curva')
-		# self.removePlotButton = QtGui.QPushButton('Remover Gráfico')
+		# self.exportButton = QtWidgets.QPushButton('Exportar imagem')
+		# self.addPlotButton = QtWidgets.QPushButton('Nova Curva')
+		# self.removePlotButton = QtWidgets.QPushButton('Remover Gráfico')
 
 		self.__plotTypes__ = ['Pontos', 'Linhas', 'Pontos + Linhas']
 		self.__plotValues__ = [PlotType.SCATTERPLOT, PlotType.LINEPLOT, PlotType.ALL]
@@ -151,13 +151,13 @@ class WidgetConfig(QtGui.QWidget):
 		self.tabWidgetPlotItemConfig.clear()
 
 		for plotItemVM in self.plotItemViewModelList:
-			widgetPlotItem = QtGui.QWidget()
-			widgetPlotItem.setLayout(QtGui.QVBoxLayout())
+			widgetPlotItem = QtWidgets.QWidget()
+			widgetPlotItem.setLayout(QtWidgets.QVBoxLayout())
 
-			widgetYVar = QtGui.QWidget(self)
-			widgetYVar.setLayout(QtGui.QHBoxLayout())
-			widgetYVar.layout().addWidget(QtGui.QLabel('Variável Y: '))
-			yVarConfig = QtGui.QComboBox(self)
+			widgetYVar = QtWidgets.QWidget(self)
+			widgetYVar.setLayout(QtWidgets.QHBoxLayout())
+			widgetYVar.layout().addWidget(QtWidgets.QLabel('Variável Y: '))
+			yVarConfig = QtWidgets.QComboBox(self)
 			yVarConfig.addItems(self.__xVarValues__)
 			yVarConfig.setCurrentIndex(self.__xVarValues__.index(plotItemVM.strVariavel))
 			def changeYVar(plotItemViewModel, i):
@@ -168,10 +168,10 @@ class WidgetConfig(QtGui.QWidget):
 			widgetPlotItem.layout().addWidget(widgetYVar)
 
 
-			groupBoxYQuery = QtGui.QGroupBox('Y Query', self)
-			groupBoxYQuery.setLayout(QtGui.QVBoxLayout())
+			groupBoxYQuery = QtWidgets.QGroupBox('Y Query', self)
+			groupBoxYQuery.setLayout(QtWidgets.QVBoxLayout())
 
-			yQueryConfig = QtGui.QLineEdit(self)
+			yQueryConfig = QtWidgets.QLineEdit(self)
 			groupBoxYQuery.layout().addWidget(yQueryConfig, stretch = 1)
 
 			def changeYQuery(plotItemViewModel, yQueryConfig):
@@ -181,10 +181,10 @@ class WidgetConfig(QtGui.QWidget):
 
 			yQueryConfig.editingFinished.connect(f.partial(changeYQuery, plotItemVM, yQueryConfig))
 
-			widgetYQueryViagens = QtGui.QWidget(self)
-			widgetYQueryViagens.setLayout(QtGui.QHBoxLayout())
-			yQueryChooseDateATRButton = QtGui.QPushButton('Escolher Viagem de ATR', self)
-			yQueryChooseDateASGButton = QtGui.QPushButton('Escolher Viagem de ASG', self)
+			widgetYQueryViagens = QtWidgets.QWidget(self)
+			widgetYQueryViagens.setLayout(QtWidgets.QHBoxLayout())
+			yQueryChooseDateATRButton = QtWidgets.QPushButton('Escolher Viagem de ATR', self)
+			yQueryChooseDateASGButton = QtWidgets.QPushButton('Escolher Viagem de ASG', self)
 			yQueryChooseDateATRButton.clicked.connect(f.partial(self.escolheViagem, self.__viagensATR__, yQueryConfig))
 			yQueryChooseDateASGButton.clicked.connect(f.partial(self.escolheViagem, self.__viagensASG__, yQueryConfig))
 			widgetYQueryViagens.layout().addWidget(yQueryChooseDateATRButton)
@@ -193,7 +193,7 @@ class WidgetConfig(QtGui.QWidget):
 
 			widgetPlotItem.layout().addWidget(groupBoxYQuery, stretch = 1)
 
-			chooseColorButton = QtGui.QPushButton('Escolher cor da curva')
+			chooseColorButton = QtWidgets.QPushButton('Escolher cor da curva')
 			def repaint(plotItemViewModel, chooseColorButton):
 				color = QtGui.QColor(plotItemViewModel.color[0], plotItemViewModel.color[1], plotItemViewModel.color[2])
 				chooseColorButton.setStyleSheet("QWidget { background-color: %s}" % color.name())
@@ -210,10 +210,10 @@ class WidgetConfig(QtGui.QWidget):
 
 			widgetPlotItem.layout().addWidget(chooseColorButton)
 
-			widgetPlotType = QtGui.QWidget(self)
-			widgetPlotType.setLayout(QtGui.QHBoxLayout())
-			widgetPlotType.layout().addWidget(QtGui.QLabel('Tipo de plot: '))
-			plotTypeConfig = QtGui.QComboBox(self)
+			widgetPlotType = QtWidgets.QWidget(self)
+			widgetPlotType.setLayout(QtWidgets.QHBoxLayout())
+			widgetPlotType.layout().addWidget(QtWidgets.QLabel('Tipo de plot: '))
+			plotTypeConfig = QtWidgets.QComboBox(self)
 			plotTypeConfig.addItems(self.__plotTypes__)
 			# plotTypeConfig.setCurrentIndex(self.__xVarValues__.index(plotItemVM.strVariavel))
 			plotTypeConfig.setCurrentIndex(self.__plotValues__.index(plotItemVM.plotType))
@@ -228,7 +228,7 @@ class WidgetConfig(QtGui.QWidget):
 				self.plotPresenter.removePlotItemPresenter(pltItemPres)
 				self.setPlotPresenterToConfig(self.plotPresenter)
 			
-			removeButton = QtGui.QPushButton('Remover Curva')
+			removeButton = QtWidgets.QPushButton('Remover Curva')
 			removeButton.clicked.connect(f.partial(removePlot, plotItemVM))
 
 			widgetPlotItem.layout().addWidget(removeButton)

@@ -32,16 +32,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle('Visualizador de logs')
         self.setMinimumSize(1080,720)
 
-        fileinf = QtCore.QFileInfo(QtGui.QApplication.instance().arguments()[0])
+        fileinf = QtCore.QFileInfo(QtWidgets.QApplication.instance().arguments()[0])
 
-        self.setWindowIcon(QtGui.QFileIconProvider().icon(fileinf))
-        # self.setWindowIcon(QtGui.QIcon(ICON_FILE))
+        self.setWindowIcon(QtWidgets.QFileIconProvider().icon(fileinf))
+        # self.setWindowIcon(QtWidgets.QIcon(ICON_FILE))
 
         self.tabPresenters = []
 
         self.information = opt.loadConfigFile(CONFIG_FILE)
 
-        menuBar = QtGui.QMenuBar(self)
+        menuBar = QtWidgets.QMenuBar(self)
 
         self.criaMenuArquivo(menuBar)
         self.criaMenuEditar(menuBar)
@@ -56,9 +56,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.tabWidgetPlots = QtWidgets.QTabWidget(self)
         # self.tabWidgetPlots.cl
-
-
-
         # Cria o layout
         layout = QtWidgets.QHBoxLayout()
         layout.addWidget(self.tabWidgetPlots)
@@ -79,16 +76,16 @@ class MainWindow(QtWidgets.QMainWindow):
     def criaMenuArquivo(self, menuBar):
         arquivoToolBar = self.addToolBar("Arquivo")
         menuArquivo = menuBar.addMenu('Arquivo')
-        actAbrir = QtGui.QMenu.addAction(menuArquivo, self.style().standardIcon(QStyle.SP_DialogOpenButton), '&Abrir')
-        QtGui.QAction.setToolTip(actAbrir, u'Abrir arquivo csv para análise')
-        QtGui.QAction.setShortcuts(actAbrir, QtGui.QKeySequence.Open)
+        actAbrir = QtWidgets.QMenu.addAction(menuArquivo, self.style().standardIcon(QStyle.SP_DialogOpenButton), '&Abrir')
+        QtWidgets.QAction.setToolTip(actAbrir, u'Abrir arquivo csv para análise')
+        QtWidgets.QAction.setShortcuts(actAbrir, QtGui.QKeySequence.Open)
         actAbrir.triggered.connect(self.escolheArquivoAbrir)
         arquivoToolBar.addAction(actAbrir)
 
-        QtGui.QMenu.addSeparator(menuArquivo)
+        QtWidgets.QMenu.addSeparator(menuArquivo)
 
-        actSair = QtGui.QMenu.addAction(menuArquivo, self.style().standardIcon(QStyle.SP_DialogCloseButton), '&Sair')
-        QtGui.QAction.setShortcut(actSair, QtGui.QKeySequence.Close)
+        actSair = QtWidgets.QMenu.addAction(menuArquivo, self.style().standardIcon(QStyle.SP_DialogCloseButton), '&Sair')
+        QtWidgets.QAction.setShortcut(actSair, QtGui.QKeySequence.Close)
         actSair.triggered.connect(lambda: self.close())
 
 
@@ -96,11 +93,11 @@ class MainWindow(QtWidgets.QMainWindow):
         menuEditar = menuBar.addMenu('Editar')
 
         self.actAdicionarTab = menuEditar.addAction('&Adicionar Tab')
-        QtGui.QAction.setDisabled(self.actAdicionarTab, True)
+        QtWidgets.QAction.setDisabled(self.actAdicionarTab, True)
         self.actAdicionarTab.triggered.connect(self.adicionarTab)
 
         self.actAdicionarPlot = menuEditar.addAction('&Adicionar Gráfico')
-        QtGui.QAction.setDisabled(self.actAdicionarPlot, True)
+        QtWidgets.QAction.setDisabled(self.actAdicionarPlot, True)
         self.actAdicionarPlot.triggered.connect(self.adicionarPlot)
 
         menuEditar.addSeparator()
@@ -121,11 +118,11 @@ class MainWindow(QtWidgets.QMainWindow):
         menuOps = menuBar.addMenu('Opções')
 
         self.actCarregarOps = menuOps.addAction('&Carregar configuração de Gráficos')
-        QtGui.QAction.setDisabled(self.actCarregarOps, True)
+        QtWidgets.QAction.setDisabled(self.actCarregarOps, True)
         self.actCarregarOps.triggered.connect(self.carregarOps)
 
         self.actSalvarOps = menuOps.addAction('&Salvar configuração de Gráficos')
-        QtGui.QAction.setDisabled(self.actSalvarOps, True)
+        QtWidgets.QAction.setDisabled(self.actSalvarOps, True)
         self.actSalvarOps.triggered.connect(self.salvarOps)
 
         opsToolBar = self.addToolBar("Opções")
@@ -196,7 +193,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def removerTab(self):
         if self.tabWidgetPlots.count() <= 1:
-            QtGui.QMessageBox.warning(self, 'Erro', 'Deve haver no mínimo uma tab aberta!')
+            QtWidgets.QMessageBox.warning(self, 'Erro', 'Deve haver no mínimo uma tab aberta!')
             return
 
         currentTabIndex = self.tabWidgetPlots.currentIndex()
@@ -225,7 +222,7 @@ class MainWindow(QtWidgets.QMainWindow):
         for tabPres in self.tabPresenters:
             if plotToRemove in tabPres.plotPresenters:
                 if len(tabPres.plotPresenters) <= 1:
-                    QtGui.QMessageBox.warning(self, 'Erro', 'Cada tab deve ter no mínimo um plot!')
+                    QtWidgets.QMessageBox.warning(self, 'Erro', 'Cada tab deve ter no mínimo um plot!')
                     return
                 tabPres.plotPresenters.remove(plotToRemove)
                 tabPres.tabView.removeItem(plotToRemove.plotView.plot)
@@ -305,7 +302,7 @@ class MainWindow(QtWidgets.QMainWindow):
             QtCore.QCoreApplication.processEvents()
 
             # print('Init', time.strftime('%Y-%m-%d %H:%M:%S'))
-            res = "\n".join([controller.carregaArquivo(str(strfilename)) for strfilename in arquivo[0]])
+            res = "\n".join([strfilename.split('/')[-1] + ": " + controller.carregaArquivo(str(strfilename)) for strfilename in arquivo[0]])
 
             # # Coloca dados na listwidget
             # print('Arquivo', time.strftime('%Y-%m-%d %H:%M:%S'))
@@ -332,11 +329,11 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.tabWidgetPlots.currentChanged.connect(self.currentTabChanged)
                 self.currentTabChanged(0)
 
-                QtGui.QAction.setEnabled(self.actAdicionarTab, True)
-                QtGui.QAction.setEnabled(self.actAdicionarPlot, True)
-                QtGui.QAction.setEnabled(self.actRemoverTab, True)
-                QtGui.QAction.setEnabled(self.actSalvarOps, True)
-                QtGui.QAction.setEnabled(self.actCarregarOps, True)
+                QtWidgets.QAction.setEnabled(self.actAdicionarTab, True)
+                QtWidgets.QAction.setEnabled(self.actAdicionarPlot, True)
+                QtWidgets.QAction.setEnabled(self.actRemoverTab, True)
+                QtWidgets.QAction.setEnabled(self.actSalvarOps, True)
+                QtWidgets.QAction.setEnabled(self.actCarregarOps, True)
 
                 self.widgetConfigPlot.setEnabled(True)
                 self.__firstFile__ = False
@@ -352,7 +349,7 @@ class MainWindow(QtWidgets.QMainWindow):
             # idxpg += 1
             # pgbar.setValue(idxpg)
             pgbar.close()
-            QtGui.QMessageBox.warning(self,'Carregamento do arquivo', res)
+            QtWidgets.QMessageBox.warning(self,'Carregamento do arquivo', res)
             self.widgetConfigPlot.show()
             self.widgetConfigPlot.activateWindow()
             self.widgetConfigPlot.setFocus()
@@ -400,9 +397,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def carregaTab(self, t):
         # print("No inicio")
-        tbwidget = QtGui.QWidget(self)
-        lay = QtGui.QVBoxLayout(tbwidget)
-        toolbar = QtGui.QToolBar(self)
+        tbwidget = QtWidgets.QWidget(self)
+        lay = QtWidgets.QVBoxLayout(tbwidget)
+        toolbar = QtWidgets.QToolBar(self)
         lay.addWidget(toolbar)
         win = pg.GraphicsLayoutWidget(self)
         lay.addWidget(win)
@@ -428,7 +425,7 @@ class MainWindow(QtWidgets.QMainWindow):
             tab.maxPlots = val
 
 
-        chkBox = QtGui.QCheckBox('Compartilhar eixo X', toolbar)
+        chkBox = QtWidgets.QCheckBox('Compartilhar eixo X', toolbar)
         toolbar.addWidget(chkBox)
         toolbar.addSeparator()
 
@@ -440,7 +437,7 @@ class MainWindow(QtWidgets.QMainWindow):
             plotPresenter.plotViewModel.xVariavelBehavior.subscribe(f.partial(self.changeAllXVar, plotPresenter, plotPresenters, tabVM))
             plotPresenter.plotViewModel.xQueryBehavior.subscribe(f.partial(self.changeAllXQuery, plotPresenter, plotPresenters, tabVM))
 
-        tabVM.nameBehavior.subscribe(f.partial(QtGui.QTabWidget.setTabText, self.tabWidgetPlots, self.tabWidgetPlots.count() - 1))
+        tabVM.nameBehavior.subscribe(f.partial(QtWidgets.QTabWidget.setTabText, self.tabWidgetPlots, self.tabWidgetPlots.count() - 1))
 
         self.tabPresenters.append(TabPresenter(win, tabVM, plotPresenters))
         tabVM.sharexBehavior.subscribe(chkBox.setChecked)
@@ -476,7 +473,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
 def start():
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     w = MainWindow()
     w.show()
     return app.exec_()

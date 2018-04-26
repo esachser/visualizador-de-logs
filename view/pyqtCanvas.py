@@ -21,22 +21,22 @@ class PlotMenu(QtWidgets.QMenu):
     sigAddPlot = QtCore.pyqtSignal()
 
     def __init__(self, plotPresenter):
-        QtGui.QMenu.__init__(self)
+        QtWidgets.QMenu.__init__(self)
 
         self.plotPresenter = weakref.ref(plotPresenter)
 
         self.setTitle("ViewBox options")
 
-        self.viewAll = QtGui.QAction("Resetar eixos", self)
+        self.viewAll = QtWidgets.QAction("Resetar eixos", self)
         self.viewAll.triggered.connect(self.autoRange)
         self.addAction(self.viewAll)
 
 
-        self.addPlot = QtGui.QAction("Adicionar curva", self)
+        self.addPlot = QtWidgets.QAction("Adicionar curva", self)
         self.addPlot.triggered.connect(self.addNewPlot)
         self.addAction(self.addPlot)
 
-        self.removePlot = QtGui.QAction("Remover gráfico", self)
+        self.removePlot = QtWidgets.QAction("Remover gráfico", self)
         self.removePlot.triggered.connect(self.sigRemovePlot.emit)
         self.addAction(self.removePlot)
 
@@ -44,7 +44,7 @@ class PlotMenu(QtWidgets.QMenu):
     def addNewPlot(self):
         items = PlotMenu.__xVarValues__
 
-        item, ok = QtGui.QInputDialog.getItem(self, "Escolha a variável",
+        item, ok = QtWidgets.QInputDialog.getItem(self, "Escolha a variável",
             "Variáveis", items, 0, False)
 
         if ok and item:
@@ -280,6 +280,7 @@ class InfoPlotItem(QtCore.QObject):
                 xstr = x.strftime('%H:%M:%S')
             else:
                 xstr = str(round(x, 3))
+                
             self.xtext.setHtml("<div style='background-color: rgba(250, 250, 250, 60);'>{}</div>".format(xstr))
             self.xtext.setPos(mousePoint.x(), self.plot.vb.viewRect().top())
 
@@ -410,7 +411,7 @@ class PlotItemAero(pg.PlotItem):
         self.update()
 
     def paint(self, p, *args):
-        QtGui.QGraphicsWidget.paint(self, p, *args)
+        QtWidgets.QGraphicsWidget.paint(self, p, *args)
         if self.border is not None:
             p.setPen(self.border)
             p.drawRect(self.boundingRect())
