@@ -24,7 +24,6 @@ class PlotMenu(QtWidgets.QMenu):
         QtWidgets.QMenu.__init__(self)
 
         self.plotPresenter = weakref.ref(plotPresenter)
-
         self.setTitle("ViewBox options")
 
         self.viewAll = QtWidgets.QAction("Resetar eixos", self)
@@ -146,6 +145,7 @@ class InfoPlotItem(QtCore.QObject):
         self.restartLegend()
         self.plot.addItem(self.vLine, ignoreBounds=True)
         self.plot.addItem(self.xtext, ignoreBounds=True)
+        #self.plot.addItem(pg.InfiniteLine(0.5, 0, label='Teste', movable=True))
 
 
     def prepareData(self, v, c, pt):
@@ -436,7 +436,7 @@ def processPlot(window, options):
     # print('InitPlot' ,time.strftime('%Y:%m:%d %H:%M:%S'))
     # plot = window.addPlot(axisItems={'bottom': TimeAxisItem(orientation='bottom')}) if x.dtypes == 'datetime64[ns]' else window.addPlot()
     plot = PlotItemAero(axisItems={'bottom': MyAxisItem(isTime = (x.dtypes == 'datetime64[ns]'), orientation='bottom')})
-    # print('MiddlePlot' ,time.strftime('%Y:%m:%d %H:%M:%S'))
+    # print('MiddlePlot' ,time.strftime('%Y:%m:%d %H:%M:%S'))   
     window.addItem(plot)
     nplot = InfoPlotItem(plot, None, None, options.grid, time = (x.dtypes == 'datetime64[ns]'))
     # print('EndPlot' ,time.strftime('%Y:%m:%d %H:%M:%S'))

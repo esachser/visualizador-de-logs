@@ -37,7 +37,7 @@ class MainWindow(QtWidgets.QMainWindow):
         fileinf = QtCore.QFileInfo(QtWidgets.QApplication.instance().arguments()[0])
 
         self.setWindowIcon(QtWidgets.QFileIconProvider().icon(fileinf))
-        # self.setWindowIcon(QtWidgets.QIcon(ICON_FILE))
+        # self.setWindowIcon(QtGui.QIcon(ICON_FILE))
 
         self.tabPresenters = []
 
@@ -66,7 +66,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.main_widget)
 
         pg.setConfigOptions(antialias=True)
-        pg.setConfigOption('background', 'w')
+        pg.setConfigOption('background', '#FFF')
 
         # self.widgetConfigPlot.sigRemovePlot.connect(lambda: self.removerPlot(self.widgetConfigPlot.plotPresenter))
         self.widgetConfigPlot.setEnabled(False)
