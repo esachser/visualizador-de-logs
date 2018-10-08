@@ -19,6 +19,7 @@ class PlotMenu(QtWidgets.QMenu):
 
     sigRemovePlot = QtCore.pyqtSignal()
     sigAddPlot = QtCore.pyqtSignal()
+    sigAddNewGraphic = QtCore.pyqtSignal()
 
     def __init__(self, plotPresenter):
         QtWidgets.QMenu.__init__(self)
@@ -34,6 +35,10 @@ class PlotMenu(QtWidgets.QMenu):
         self.addPlot = QtWidgets.QAction("Adicionar curva", self)
         self.addPlot.triggered.connect(self.addNewPlot)
         self.addAction(self.addPlot)
+
+        self.addNewGraphic = QtWidgets.QAction("Adicionar gráfico", self)
+        self.addNewGraphic.triggered.connect(self.sigAddNewGraphic.emit)
+        self.addAction(self.addNewGraphic)
 
         self.removePlot = QtWidgets.QAction("Remover gráfico", self)
         self.removePlot.triggered.connect(self.sigRemovePlot.emit)

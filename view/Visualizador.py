@@ -267,6 +267,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         p.plotView.plot.vb.menu.sigRemovePlot.connect(f.partial(self.removerPlot, p))
         p.plotView.plot.vb.menu.sigAddPlot.connect(f.partial(self.widgetConfigPlot.setPlotPresenterToConfig, p))
+        p.plotView.plot.vb.menu.sigAddNewGraphic.connect(self.adicionarPlot)
         p.plotView.sigMouseClick.connect(f.partial(self.setConfigPlot, p))
         p.plotView.sigDoubleClick.connect(self.widgetConfigPlot.activateWindow)
         p.plotViewModel.xVariavelBehavior.subscribe(f.partial(self.changeAllXVar, p, currentTabPresenter.plotPresenters, currentTabPresenter.tabViewModel))
@@ -438,6 +439,7 @@ class MainWindow(QtWidgets.QMainWindow):
         for plotPresenter in plotPresenters:
             plotPresenter.plotView.plot.vb.menu.sigRemovePlot.connect(f.partial(self.removerPlot, plotPresenter))
             plotPresenter.plotView.plot.vb.menu.sigAddPlot.connect(f.partial(self.widgetConfigPlot.setPlotPresenterToConfig, plotPresenter))
+            plotPresenter.plotView.plot.vb.menu.sigAddNewGraphic.connect(self.adicionarPlot)
             plotPresenter.plotView.sigMouseClick.connect(f.partial(self.setConfigPlot, plotPresenter))
             plotPresenter.plotView.sigDoubleClick.connect(self.widgetConfigPlot.activateWindow)
             plotPresenter.plotViewModel.xVariavelBehavior.subscribe(f.partial(self.changeAllXVar, plotPresenter, plotPresenters, tabVM))
@@ -480,6 +482,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
 def start():
     app = QtWidgets.QApplication(sys.argv)
+    app.setStyle(QtWidgets.QStyleFactory.create('Fusion'))
     w = MainWindow()
     w.show()
     return app.exec_()
