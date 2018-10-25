@@ -305,7 +305,8 @@ class MainWindow(QtWidgets.QMainWindow):
             QtCore.QCoreApplication.processEvents()
 
             # print('Init', time.strftime('%Y-%m-%d %H:%M:%S'))
-            res = "\n".join([strfilename.split('/')[-1] + ": " + controller.carregaArquivo(str(strfilename)) for strfilename in arquivo[0]])
+            # res = "\n".join([strfilename.split('/')[-1] + ": " + controller.carregaArquivo(str(strfilename)) for strfilename in arquivo[0]])
+            res = "\n".join(controller.carregaArquivos([str(strfilename) for strfilename in arquivo[0]]))
 
             # # Coloca dados na listwidget
             # print('Arquivo', time.strftime('%Y-%m-%d %H:%M:%S'))
