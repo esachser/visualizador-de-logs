@@ -37,14 +37,6 @@ class WidgetConfig(QtWidgets.QWidget):
 		groupBoxXQuery.layout().addWidget(self.xQueryConfig, stretch = 1)
 		# vLayoutConfig.addWidget(widgetXQuery)
 
-		widgetXQueryViagens = QtWidgets.QWidget(self)
-		widgetXQueryViagens.setLayout(QtWidgets.QHBoxLayout())
-		self.xQueryChooseDateATRButton = QtWidgets.QPushButton('Escolher Viagem de ATR', self)
-		self.xQueryChooseDateASGButton = QtWidgets.QPushButton('Escolher Viagem de ASG', self)
-		widgetXQueryViagens.layout().addWidget(self.xQueryChooseDateATRButton)
-		widgetXQueryViagens.layout().addWidget(self.xQueryChooseDateASGButton)
-		groupBoxXQuery.layout().addWidget(widgetXQueryViagens)
-
 		vLayoutConfig.addWidget(groupBoxXQuery, stretch = 0)
 
 		self.chkBoxGrid = QtWidgets.QCheckBox('Habilitar grid', self)
@@ -72,13 +64,6 @@ class WidgetConfig(QtWidgets.QWidget):
 		if self.plotViewModel is not None:
 			self.xVarConfig.setCurrentIndex(self.__xVarValues__.index(self.plotViewModel.xVariavel))
 		self.__setXVar__ = False
-		
-
-	def setViagensATR(self, viagens):
-		self.__viagensATR__ = viagens
-
-	def setViagensASG(self, viagens):
-		self.__viagensASG__ = viagens
 
 
 	def setPlotPresenterToConfig(self, plotPresenter):
@@ -121,32 +106,6 @@ class WidgetConfig(QtWidgets.QWidget):
 			self.plotViewModel.grid = (v != 0)
 		self.chkBoxGrid.stateChanged.connect(changeGrid)
 
-		self.xQueryChooseDateATRButton.clicked.connect(lambda: self.escolheViagem(self.__viagensATR__, self.xQueryConfig))
-		self.xQueryChooseDateASGButton.clicked.connect(lambda: self.escolheViagem(self.__viagensASG__, self.xQueryConfig))
-
-		# def addNewPlot():
-		# 	self.plotPresenter.addPlotItem(self.__xVarValues__[0], '', [0,0,0], PlotType.SCATTERPLOT)
-		# 	self.setPlotPresenterToConfig(self.plotPresenter)
-
-		# self.addPlotButton.clicked.connect(addNewPlot)
-		# self.layout().addWidget(self.addPlotButton)
-
-
-		# self.removePlotButton.clicked.connect(self.sigRemovePlot.emit)
-		# self.layout().addWidget(self.removePlotButton)
-
-		# def exportImage():
-		# 	import pyqtgraph as pg
-		# 	import pyqtgraph.exporters
-
-		# 	plt = self.plotPresenter.plotView
-		# 	exporter = pyqtgraph.exporters.ImageExporter(plt.plot)
-
-		# 	exporter.export('myimage.png')
-
-		# self.exportButton.clicked.connect(exportImage)
-		# self.layout().addWidget(self.exportButton)
-
 	def resetTab(self):
 		self.tabWidgetPlotItemConfig.clear()
 
@@ -180,16 +139,6 @@ class WidgetConfig(QtWidgets.QWidget):
 			yQueryConfig.setText(plotItemVM.strQuery)
 
 			yQueryConfig.editingFinished.connect(f.partial(changeYQuery, plotItemVM, yQueryConfig))
-
-			widgetYQueryViagens = QtWidgets.QWidget(self)
-			widgetYQueryViagens.setLayout(QtWidgets.QHBoxLayout())
-			yQueryChooseDateATRButton = QtWidgets.QPushButton('Escolher Viagem de ATR', self)
-			yQueryChooseDateASGButton = QtWidgets.QPushButton('Escolher Viagem de ASG', self)
-			yQueryChooseDateATRButton.clicked.connect(f.partial(self.escolheViagem, self.__viagensATR__, yQueryConfig))
-			yQueryChooseDateASGButton.clicked.connect(f.partial(self.escolheViagem, self.__viagensASG__, yQueryConfig))
-			widgetYQueryViagens.layout().addWidget(yQueryChooseDateATRButton)
-			widgetYQueryViagens.layout().addWidget(yQueryChooseDateASGButton)
-			groupBoxYQuery.layout().addWidget(widgetYQueryViagens)
 
 			widgetPlotItem.layout().addWidget(groupBoxYQuery, stretch = 1)
 
@@ -234,28 +183,5 @@ class WidgetConfig(QtWidgets.QWidget):
 			widgetPlotItem.layout().addWidget(removeButton)
 
 			self.tabWidgetPlotItemConfig.addTab(widgetPlotItem, plotItemVM.strVariavel)
-
-
-
-
-	def escolheViagem(self, viagens, toWrite):
-		
-		items = ["{} --- {}".format(datai, dataf) for datai, dataf in viagens]
-
-		iptDialog = QInputDialog(self)
-		iptDialog.setOption(QInputDialog.UseListViewForComboBoxItems, True)
-		iptDialog.setWindowTitle("Escolha uma viagem")
-		iptDialog.setLabelText("Viagens")
-		iptDialog.setInputMode(QInputDialog.TextInput)
-		iptDialog.setComboBoxItems(items)
-		iptDialog.setComboBoxEditable(False)
-		ok = iptDialog.exec()
-		item = iptDialog.textValue()
-			
-		if ok and item:
-			datai, dataf = viagens[items.index(item)]
-			toWrite.setFocus()
-			toWrite.setText('"{}" <= DataHora_PLC <= "{}"'.format(datai, dataf))
-			self.tabWidgetPlotItemConfig.setFocus()
 
 

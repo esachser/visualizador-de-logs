@@ -26,12 +26,12 @@ def carregaArquivo(arquivo):
                     df['DataHora_PLC'] = df['LocalDate'] + ' ' + df['LocalTime']
                     df.drop(['LocalDate', 'LocalTime'], axis=1, inplace=True)
 
-            novoDado = DadoSistema.fromDataFrame(df, False)
+            novoDado = DadoSistema.fromDataFrame(df)
             arquivosCarregados[arquivo] = True
             try:
                 allDadoSistema = DadoSistema.fromDataFrame(novoDado.__df__.append(allDadoSistema.__df__, ignore_index=True, sort=False))
             except MemoryError as m:
-                print("Memory Error")
+                print("Memory Error", m)
                 arquivosCarregados.pop(arquivo)
                 result = 'Memória insuficiente'
 
@@ -62,7 +62,7 @@ def carregaArquivos(arquivos):
                         df['DataHora_PLC'] = df['LocalDate'] + ' ' + df['LocalTime']
                         df.drop(['LocalDate', 'LocalTime'], axis=1, inplace=True)
 
-                novoDado = DadoSistema.fromDataFrame(df, False)
+                novoDado = DadoSistema.fromDataFrame(df)
                 arquivosCarregados[arquivo] = True
                 dfs.append(novoDado.__df__)
             except:
@@ -74,7 +74,7 @@ def carregaArquivos(arquivos):
     try:
         allDadoSistema = DadoSistema.fromDataFrame(allDadoSistema.__df__.append(dfs, ignore_index=True, sort=False))
     except MemoryError as m:
-        print("Memory Error")
+        print("Memory Error", m)
         for arquivo in arquivos: arquivosCarregados.pop(arquivo)
         result = ['Memória insuficiente']*len(arquivos)
 
@@ -83,94 +83,11 @@ def carregaArquivos(arquivos):
 
     return result
 
-
-def getDatasArquivo(arquivo):
-    # Retorna todas as datas do arquivo em questão, que já deve estar carregado
-    global allDadoSistema
-    try:
-        res = allDadoSistema.getTodasDatas()
-    except:
-        res = None
-
-    return res
-
-def getDatasHorasATRparaASG(arquivo):
-    # Retorna as datas de ATR para ASG do arquivo em questão, que já deve estar carregado
-    global allDadoSistema
-    try:
-        res = DadoSistema.getDataHoraViagensATR(allDadoSistema)
-    except:
-        res = None
-
-    return res
-
-
-def getDatasHorasASGparaATR(arquivo):
-    # Retorna as datas de ASG para ATR do arquivo em questão, que já deve estar carregado
-    global allDadoSistema
-    try:
-        res = DadoSistema.getDataHoraViagensASG(allDadoSistema)
-    except:
-        res = None
-
-    return res
-
 def getHeader(arquivo):
     # Retorna os nomes dos dados que foram carregados
     global allDadoSistema
     try:
         res = DadoSistema.getHeader(allDadoSistema)
-    except:
-        res = None
-
-    return res
-
-def getInicioFimViagensATRparaASG(arquivo):
-    # Retorna os nomes dos dados que foram carregados
-    global allDadoSistema
-    try:
-        datasHoras = DadoSistema.getDataHoraViagensATR(allDadoSistema)
-        res = [(horario, horario + DadoSistema.getTempoViagemATR(allDadoSistema, horario))for horario in sorted(datasHoras)]
-    except:
-        res = None
-
-    return res
-
-def getInicioFimViagensASGparaATR(arquivo):
-    # Retorna os nomes dos dados que foram carregados
-    global allDadoSistema
-    try:
-        datasHoras = DadoSistema.getDataHoraViagensASG(allDadoSistema)
-        res = [(horario, horario + DadoSistema.getTempoViagemASG(allDadoSistema, horario))for horario in sorted(datasHoras)]
-    except:
-        res = None
-
-    return res
-
-def getDictHoraDataHoraATRparaASG(arquivo):
-    global allDadoSistema
-    try:
-        datasHoras = DadoSistema.getDataHoraViagensATR(allDadoSistema)
-        datas = sorted(set(map(lambda dh: pd.datetime.date(dh), datasHoras)))
-        res = OrderedDict()
-        for data in datas:
-            horariosData = filter(lambda d: pd.datetime.date(d) == data, datasHoras)
-            res[data] = [(pd.datetime.time(horario), DadoSistema.getTempoViagemATR(allDadoSistema, horario)) for horario in horariosData]
-    except:
-        res = None
-
-    return res
-
-
-def getDictHoraDataHoraASGparaATR(arquivo):
-    global allDadoSistema
-    try:
-        datasHoras = DadoSistema.getDataHoraViagensASG(allDadoSistema)
-        datas = sorted(set(map(lambda dh: pd.datetime.date(dh), datasHoras)))
-        res = OrderedDict()
-        for data in datas:
-            horariosData = filter(lambda d: pd.datetime.date(d) == data, datasHoras)
-            res[data] = [(pd.datetime.time(horario), DadoSistema.getTempoViagemASG(allDadoSistema, horario)) for horario in horariosData]
     except:
         res = None
 
@@ -220,21 +137,3 @@ def varXYExists(strX, strY):
     if strX in allDadoSistema.__df__.axes[1] and strY in allDadoSistema.__df__.axes[1]:
         return True
     return False
-
-def getViagensATRparaASG(arquivo):
-    global allDadoSistema
-    try:
-        res = DadoSistema.getViagensATR(allDadoSistema)
-    except:
-        res = None
-
-    return res
-
-def getViagensASGparaATR(arquivo):
-    global allDadoSistema
-    try:
-        res = DadoSistema.getViagensASG(allDadoSistema)
-    except:
-        res = None
-
-    return res

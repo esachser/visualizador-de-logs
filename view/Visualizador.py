@@ -24,8 +24,8 @@ from TabWidgets import TabWidget, TabBar
 import time
 
 MAX_NUMBER_OF_PLOTS_PER_TAB = 6
-CONFIG_FILE = '{}/configFile.json'.format(pgname)
-ICON_FILE = '{}/VisIcon.ico'.format(pgname)
+CONFIG_FILE = os.path.join(pgname, 'configFile.json')
+ICON_FILE = os.path.join(pgname, 'VisIcon.ico')
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -37,7 +37,7 @@ class MainWindow(QtWidgets.QMainWindow):
         fileinf = QtCore.QFileInfo(QtWidgets.QApplication.instance().arguments()[0])
 
         self.setWindowIcon(QtWidgets.QFileIconProvider().icon(fileinf))
-        # self.setWindowIcon(QtGui.QIcon(ICON_FILE))
+        self.setWindowIcon(QtGui.QIcon(ICON_FILE))
 
         self.tabPresenters = []
 
@@ -314,8 +314,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
             PlotMenu.setXVarOptions(self.header)
             self.widgetConfigPlot.setXVarOptions(self.header)
-            self.widgetConfigPlot.setViagensATR(controller.getInicioFimViagensATRparaASG(arquivo))
-            self.widgetConfigPlot.setViagensASG(controller.getInicioFimViagensASGparaATR(arquivo))
 
             idxpg += 1
             pgbar.setValue(idxpg)
