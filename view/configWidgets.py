@@ -77,8 +77,6 @@ class WidgetConfig(QtWidgets.QWidget):
 			self.xVarConfig.currentIndexChanged.disconnect()
 			self.xQueryConfig.editingFinished.disconnect()
 			self.chkBoxGrid.stateChanged.disconnect()
-			self.xQueryChooseDateATRButton.clicked.disconnect()
-			self.xQueryChooseDateASGButton.clicked.disconnect()
 
 		self.xVarConfig.setCurrentIndex(self.__xVarValues__.index(self.plotViewModel.xVariavel))
 		self.xQueryConfig.setText(self.plotViewModel.xQuery)

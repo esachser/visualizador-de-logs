@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import rx
+from rx.subject import BehaviorSubject
 import json
 
 class TabPresenter:
@@ -26,7 +26,7 @@ def saveTabPresenters(tabPresenters, fileToSave):
 	try:
 		with open(fileToSave, 'w') as f:
 			json.dump([tabPresenter.toJSON() for tabPresenter in tabPresenters], f, indent = True)
-	except Exception as e:
+	except Exception:
 		pass
 
 
@@ -34,9 +34,9 @@ class TabViewModel:
 	"""Informação global da tab"""
 
 	def __init__(self, share_x, max_plots, name):
-		self.sharexBehavior = rx.subjects.BehaviorSubject(share_x)
-		self.maxPlotsBehavior = rx.subjects.BehaviorSubject(max_plots)
-		self.nameBehavior = rx.subjects.BehaviorSubject(name)
+		self.sharexBehavior = BehaviorSubject(share_x)
+		self.maxPlotsBehavior = BehaviorSubject(max_plots)
+		self.nameBehavior = BehaviorSubject(name)
 
 	def dispose(self):
 		self.sharexBehavior.dispose()

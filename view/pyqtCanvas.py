@@ -5,7 +5,7 @@ import pyqtgraph as pg
 import controller.utils as controller
 import pandas as pd
 import datetime
-import rx
+from rx.subject import BehaviorSubject
 import functools as f
 from PyQt5 import QtCore, QtGui, QtWidgets
 import weakref
@@ -179,7 +179,7 @@ class InfoPlotItem(QtCore.QObject):
     def plotItem(self, v, c, pt):
         nx, y, lpen, s, color = self.prepareData(v, c, pt)
 
-        plotItem =  self.plot.plot(nx, y.tolist(), name = y.name,
+        plotItem =  self.plot.plot(x=nx, y=y.tolist(), name = y.name,
                                pen = lpen,
                                symbol = s, symbolPen = color, symbolBrush = color, symbolSize = 5)
 
@@ -239,6 +239,7 @@ class InfoPlotItem(QtCore.QObject):
                     xstr = x.strftime('%H:%M:%S')
                 else:
                     xstr = str(round(x, 3))
+                # print(xstr, mousePoint.x(), self.plot.vb.viewRect().top())
                 self.xtext.setHtml("<div style='background-color: rgba(250, 250, 250, 60);'>{}</div>".format(xstr))
                 self.xtext.setPos(mousePoint.x(), self.plot.vb.viewRect().top())
 
@@ -252,8 +253,10 @@ class InfoPlotItem(QtCore.QObject):
                             try:
                                 mY = mousePoint.y()
                                 diff = (np.abs(y.index - x)).argsort()[0]
-                                val = y.ix[y.index[diff]]
-                            except:
+                                val = y.iloc[diff]
+                                # print(mY, diff, y.index[diff], val)
+                            except Exception as e:
+                                print(e)
                                 val = np.NaN
 
                     if isinstance(val, pd.Series):
@@ -264,6 +267,8 @@ class InfoPlotItem(QtCore.QObject):
                                 cho = valor
                         val = cho
                     val = round(val, 3)
+
+                    # print('val', len(self.y.values()), y)
 
                     text = '' if np.isnan(val) else '{}'.format(val)
                     t.setText(text)
@@ -285,7 +290,7 @@ class InfoPlotItem(QtCore.QObject):
                 xstr = x.strftime('%H:%M:%S')
             else:
                 xstr = str(round(x, 3))
-                
+            
             self.xtext.setHtml("<div style='background-color: rgba(250, 250, 250, 60);'>{}</div>".format(xstr))
             self.xtext.setPos(mousePoint.x(), self.plot.vb.viewRect().top())
 
@@ -458,9 +463,9 @@ def processPlot(window, options):
 
 class PlotViewModel:
     def __init__(self, xVariavel, xQuery, grid):
-        self.xVariavelBehavior = rx.subjects.BehaviorSubject(xVariavel)
-        self.xQueryBehavior = rx.subjects.BehaviorSubject(xQuery)
-        self.gridBehavior = rx.subjects.BehaviorSubject(grid)
+        self.xVariavelBehavior = BehaviorSubject(xVariavel)
+        self.xQueryBehavior = BehaviorSubject(xQuery)
+        self.gridBehavior = BehaviorSubject(grid)
         # Fazer parte dos itens
         # self.plotItems = [ for pltItem in items]
         # Itens
@@ -500,10 +505,10 @@ class PlotViewModel:
 
 class PlotItemViewModel:
     def __init__(self, strVariavel, strQuery, color, plotType):
-        self.strVariavelBehavior = rx.subjects.BehaviorSubject(strVariavel)
-        self.strQueryBehavior = rx.subjects.BehaviorSubject(strQuery)
-        self.colorBehavior = rx.subjects.BehaviorSubject(color)
-        self.plotTypeBehavior = rx.subjects.BehaviorSubject(plotType)
+        self.strVariavelBehavior = BehaviorSubject(strVariavel)
+        self.strQueryBehavior = BehaviorSubject(strQuery)
+        self.colorBehavior = BehaviorSubject(color)
+        self.plotTypeBehavior = BehaviorSubject(plotType)
 
     def dispose(self):
         self.strVariavelBehavior.dispose()

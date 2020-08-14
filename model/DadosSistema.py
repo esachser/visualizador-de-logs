@@ -5,8 +5,6 @@ import numpy as np
 import datetime
 
 dataHoraVarNome = 'datetime'
-sentidoATR = 1
-sentidoASG = 2
 
 class DataError(Exception):
     pass
