@@ -14,6 +14,8 @@ from options.info import PlotType
 import time
 import random
 
+MS_DIVISOR = 1000000
+# MS_DIVISOR = 1
 
 class PlotMenu(QtWidgets.QMenu):
 
@@ -103,7 +105,7 @@ class MyAxisItem(pg.AxisItem):
         for v in values:
             vs = v * scale
             if self.isTime:
-                vstr = self.to_datetime(vs)
+                vstr = self.to_datetime(vs*MS_DIVISOR)
             else:
                 if abs(vs) < .001 or abs(vs) >= 10000:
                     vstr = "%g" % vs
@@ -160,7 +162,7 @@ class InfoPlotItem(QtCore.QObject):
         self.xTime = x.dtype == 'datetime64[ns]'
         self.plot.getAxis('bottom').isTime = self.xTime
 
-        nx = list(map(lambda val: val.value, x.tolist())) if self.xTime else x.tolist()
+        nx = list(map(lambda val: val.value/MS_DIVISOR, x.tolist())) if self.xTime else x.tolist()
 
         color = (c[0], c[1], c[2])
 
@@ -230,7 +232,7 @@ class InfoPlotItem(QtCore.QObject):
             #     print("xtime")
 
             try:
-                x = pd.to_datetime(int(mousePoint.x())) if self.xTime else round(mousePoint.x(), 1)
+                x = pd.to_datetime(int(mousePoint.x())*MS_DIVISOR) if self.xTime else round(mousePoint.x(), 1)
             except:
                 x = None
 
