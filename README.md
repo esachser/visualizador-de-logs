@@ -1,5 +1,5 @@
-# Visualizador de logs do Aeromóvel.
-Repositório dos fontes do visualizador de logs desenvolvido para o Aeromóvel.
+# Visualizador de logs.
+Repositório dos fontes do visualizador de logs desenvolvido inicialmente para o Aeromóvel, mas que suporta a carga de arquivos CSV com valores.
 
 ## Bibliotecas necessárias:
 Este programa foi feito para python3, e necessita as seguintes bibliotecas instaladas:
@@ -25,8 +25,7 @@ gráficos com o eixo x compartilhado, etc...
 Todas essas configurações podem ficar gravadas ao final do uso, bem como podem ser salvas
 em um arquivo, para uso posterior.
 
-É possível fazer a carga de qualquer arquivo *csv*, mesmo não relativo a análise
-de logs do Aeromóvel, podendo ser utilizado como visualizador de dados gráficos.
+É possível fazer a carga de qualquer arquivo *csv*, podendo ser utilizado como visualizador de dados gráficos.
 
 Entre suas funcionalidades está a escolha das cores dos gráficos, além da escolha
 de tipos de gráfico:
